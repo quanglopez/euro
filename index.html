@@ -113,6 +113,21 @@
             z-index: 1000;
         }
         
+        /* Mobile chatbot positioning */
+        @media (max-width: 768px) {
+            .chatbot-container {
+                bottom: 80px;
+                right: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .chatbot-container {
+                bottom: 70px;
+                right: 10px;
+            }
+        }
+        
         .chatbot-toggle {
             width: 60px;
             height: 60px;
@@ -331,10 +346,70 @@
         @media (max-width: 768px) {
             .chatbot-window {
                 width: calc(100vw - 40px);
-                height: 70vh;
+                height: 60vh;
                 right: 20px;
                 left: 20px;
                 bottom: 80px;
+                max-height: 500px;
+            }
+            
+            .chatbot-toggle {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .chatbot-toggle i {
+                font-size: 20px;
+            }
+            
+            .chatbot-header {
+                padding: 15px;
+            }
+            
+            .chatbot-header h4 {
+                font-size: 16px;
+            }
+            
+            .chatbot-header p {
+                font-size: 12px;
+            }
+            
+            .chatbot-messages {
+                padding: 15px;
+                gap: 10px;
+            }
+            
+            .message {
+                font-size: 13px;
+                padding: 10px 12px;
+                max-width: 85%;
+            }
+            
+            .chatbot-input-container {
+                padding: 15px;
+            }
+            
+            .chatbot-input {
+                font-size: 14px;
+                padding: 10px 14px;
+            }
+            
+            .chatbot-send {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .quick-action-btn {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+            
+            /* Chart responsive improvements */
+            .chart-container {
+                height: 200px !important;
+                margin: 0 auto;
             }
             
             /* Navigation improvements */
@@ -412,7 +487,13 @@
             }
             
             .fixed.bottom-20.right-6 {
-                bottom: 5rem;
+                bottom: 4rem;
+            }
+            
+            /* Adjust floating buttons to not overlap with chatbot */
+            .fixed.bottom-6.right-6 {
+                bottom: 140px;
+                right: 15px;
             }
             
             /* Text sizing */
@@ -469,6 +550,76 @@
                 font-size: 0.75rem;
             }
             
+            /* Chart improvements for very small screens */
+            .chart-container {
+                height: 180px !important;
+            }
+            
+            /* Chatbot improvements for very small screens */
+            .chatbot-window {
+                width: calc(100vw - 20px);
+                height: 55vh;
+                right: 10px;
+                left: 10px;
+                bottom: 70px;
+                max-height: 450px;
+            }
+            
+            .chatbot-toggle {
+                width: 45px;
+                height: 45px;
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .chatbot-toggle i {
+                font-size: 18px;
+            }
+            
+            .chatbot-header {
+                padding: 12px;
+            }
+            
+            .chatbot-header h4 {
+                font-size: 14px;
+            }
+            
+            .chatbot-header p {
+                font-size: 11px;
+            }
+            
+            .chatbot-messages {
+                padding: 12px;
+                gap: 8px;
+            }
+            
+            .message {
+                font-size: 12px;
+                padding: 8px 10px;
+                max-width: 90%;
+                line-height: 1.3;
+            }
+            
+            .chatbot-input-container {
+                padding: 12px;
+            }
+            
+            .chatbot-input {
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+            
+            .chatbot-send {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .quick-action-btn {
+                font-size: 10px;
+                padding: 5px 8px;
+                margin: 2px;
+            }
+            
             /* Reduce spacing on very small screens */
             .py-20 {
                 padding-top: 2rem;
@@ -482,6 +633,40 @@
             .space-y-6 > * + * {
                 margin-top: 0.75rem;
             }
+            
+            /* Floating buttons for very small screens */
+            .fixed.bottom-6.right-6 {
+                bottom: 120px;
+                right: 10px;
+            }
+            
+            .fixed.bottom-20.right-6 {
+                bottom: 3rem;
+                right: 10px;
+            }
+        }
+
+        /* Loan Method Button Styles */
+        .loan-method-btn {
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+        .loan-method-btn.active {
+            background: #059669;
+            color: white;
+            border-color: #059669;
+        }
+        .loan-method-btn.active .text-gray-600 {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        .loan-method-btn:hover:not(.active) {
+            border-color: #059669;
+            background: #f0fdf4;
         }
     </style>
 </head>
@@ -930,11 +1115,6 @@
         </div>
     </section>
 
-    <!-- Products Properties Section -->
-    <section id="products properties" class="py-20 bg-gray-50">
-        <!-- Add your products properties content here -->
-    </section>
-
     <!-- Financial Calculator Section -->
     <section id="calculator" class="py-20 bg-gray-50">
         <div class="container mx-auto px-4">
@@ -990,6 +1170,24 @@
                                 </div>
                             </div>
                             
+                            <div class="mt-6">
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Phương thức trả nợ:</label>
+                                <div class="grid md:grid-cols-3 gap-4">
+                                    <button onclick="setLoanMethod('equal_payment')" class="loan-method-btn active" id="equalPaymentBtn">
+                                        <div class="font-semibold">Trả đều hàng tháng</div>
+                                        <div class="text-sm text-gray-600">Số tiền trả hàng tháng cố định</div>
+                                    </button>
+                                    <button onclick="setLoanMethod('equal_principal')" class="loan-method-btn" id="equalPrincipalBtn">
+                                        <div class="font-semibold">Theo dư nợ gốc ban đầu</div>
+                                        <div class="text-sm text-gray-600">Gốc cố định + lãi giảm dần</div>
+                                    </button>
+                                    <button onclick="setLoanMethod('decreasing_interest')" class="loan-method-btn" id="decreasingInterestBtn">
+                                        <div class="font-semibold">Giảm lãi dần</div>
+                                        <div class="text-sm text-gray-600">Gốc + lãi giảm theo thời gian</div>
+                                    </button>
+                                </div>
+                            </div>
+                            
                             <div class="mt-8">
                                 <h4 class="text-lg font-semibold text-gray-800 mb-4">Chọn sản phẩm:</h4>
                                 <div class="grid md:grid-cols-3 gap-4">
@@ -1024,101 +1222,6 @@
                                     <div class="text-2xl font-bold" id="monthlyPayment">29,200,000 VNĐ</div>
                                 </div>
                                 <div>
-                                    <div class="text-sm opacity-90">Tổng lãi phải trả</div>
-                                    <div class="text-xl font-semibold" id="totalInterest">3,508,000,000 VNĐ</div>
-                                </div>
-                                <div>
-                                    <div class="text-sm opacity-90">Tổng số tiền trả</div>
-                                    <div class="text-xl font-semibold" id="totalPayment">7,008,000,000 VNĐ</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white p-6 rounded-lg shadow-lg">
-                            <h4 class="font-semibold text-gray-800 mb-4">Biểu đồ thanh toán</h4>
-                            <canvas id="loanChart" width="300" height="200"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Investment Calculator -->
-            <div id="investmentCalculator" class="calculator-section hidden">
-                <div class="grid lg:grid-cols-3 gap-8">
-                    <!-- Input Section -->
-                    <div class="lg:col-span-2">
-                        <div class="calculator-card p-8">
-                            <h3 class="text-2xl font-bold text-gray-800 mb-6">
-                                <i class="fas fa-chart-line text-green-600 mr-3"></i>
-                                Phân tích đầu tư bất động sản
-                            </h3>
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Giá mua ban đầu (VNĐ)</label>
-                                    <input type="number" id="purchasePrice" class="w-full calculator-input" 
-                                           placeholder="5,000,000,000" value="5000000000" oninput="calculateInvestment()">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tăng giá hàng năm (%)</label>
-                                    <input type="number" id="appreciation" class="w-full calculator-input" 
-                                           placeholder="8" value="8" step="0.1" oninput="calculateInvestment()">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Thu nhập cho thuê/tháng (VNĐ)</label>
-                                    <input type="number" id="monthlyRent" class="w-full calculator-input" 
-                                           placeholder="20,000,000" value="20000000" oninput="calculateInvestment()">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Thời gian đầu tư (năm)</label>
-                                    <input type="number" id="investmentPeriod" class="w-full calculator-input" 
-                                           placeholder="10" value="10" min="1" max="30" oninput="calculateInvestment()">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Chi phí quản lý/năm (%)</label>
-                                    <input type="number" id="managementFee" class="w-full calculator-input" 
-                                           placeholder="2" value="2" step="0.1" oninput="calculateInvestment()">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Thuế bán nhà (%)</label>
-                                    <input type="number" id="sellingTax" class="w-full calculator-input" 
-                                           placeholder="2" value="2" step="0.1" oninput="calculateInvestment()">
-                                </div>
-                            </div>
-                            
-                            <div class="mt-8">
-                                <h4 class="text-lg font-semibold text-gray-800 mb-4">Kịch bản thị trường:</h4>
-                                <div class="grid md:grid-cols-3 gap-4">
-                                    <button onclick="setMarketScenario('conservative')" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
-                                        <div class="font-semibold">Bảo thủ</div>
-                                        <div class="text-sm text-gray-600">Tăng 5%/năm</div>
-                                    </button>
-                                    <button onclick="setMarketScenario('moderate')" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
-                                        <div class="font-semibold">Trung bình</div>
-                                        <div class="text-sm text-gray-600">Tăng 8%/năm</div>
-                                    </button>
-                                    <button onclick="setMarketScenario('optimistic')" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
-                                        <div class="font-semibold">Lạc quan</div>
-                                        <div class="text-sm text-gray-600">Tăng 12%/năm</div>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Results Section -->
-                    <div>
-                        <div class="result-card mb-6">
-                            <h4 class="text-lg font-semibold mb-4">Kết quả đầu tư</h4>
-                            <div class="space-y-4">
-                                <div>
-                                    <div class="text-sm opacity-90">Giá trị sau 10 năm</div>
-                                    <div class="text-2xl font-bold" id="futureValue">10,794,624,000 VNĐ</div>
-                                </div>
-                                <div>
-                                    <div class="text-sm opacity-90">Tổng thu nhập cho thuê</div>
-                                    <div class="text-xl font-semibold" id="totalRental">2,400,000,000 VNĐ</div>
-                                </div>
-                                <div>
                                     <div class="text-sm opacity-90">Lợi nhuận ròng</div>
                                     <div class="text-xl font-semibold" id="netProfit">7,594,624,000 VNĐ</div>
                                 </div>
@@ -1131,7 +1234,9 @@
                         
                         <div class="bg-white p-6 rounded-lg shadow-lg">
                             <h4 class="font-semibold text-gray-800 mb-4">Biểu đồ tăng trưởng</h4>
-                            <canvas id="investmentChart" width="300" height="200"></canvas>
+                            <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
+                                <canvas id="investmentChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1231,7 +1336,7 @@
                         </div>
                         <div class="flex items-center space-x-3">
                             <i class="fas fa-envelope text-green-500"></i>
-                            <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6c05020a032c09191e031b050208031b1f1c031e180b0d1e080902420e0516">[email&#160;protected]</a></span>
+                            <span><a href="mailto:info@eurowindowsportgarden.biz" class="hover:text-green-400">info@eurowindowsportgarden.biz</a></span>
                         </div>
                     </div>
                     <div class="mt-8">
@@ -1512,9 +1617,17 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom'
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                usePointStyle: true,
+                                font: {
+                                    size: 12
+                                }
+                            }
                         }
-                    }
+                    },
+                    cutout: '60%'
                 }
             });
         }
@@ -1543,7 +1656,10 @@
                         borderColor: '#059669',
                         backgroundColor: 'rgba(5, 150, 105, 0.1)',
                         fill: true,
-                        tension: 0.4
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
                     }]
                 },
                 options: {
@@ -1555,9 +1671,25 @@
                         }
                     },
                     scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        },
                         y: {
                             beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            },
                             ticks: {
+                                font: {
+                                    size: 10
+                                },
                                 callback: function(value) {
                                     return (value / 1000000000).toFixed(1) + 'B';
                                 }
@@ -1808,7 +1940,7 @@
 </html>
     <script id="html_badge_script1">
         window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
-            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDuxCL%2F5vl4qY9o9Kh3TKIgjaiR1un9Za0pDTlVouHnEGhnQ4pQb2lvDEH5TxNpzvN%2Belh%2BMoXgLOjIfYeJSZ3i9Ab35bZyI3bPRi0HqmtksH%2B3kTCkw2gV%2FNoJqx%2BpA2816NSiotQYeIj6Q%2B6zAg6iT%2BueUUMohvAE5L9sTeq9zwJxNIyQ7q71OdE41p85h7I%2Fy5Wqql8aGywG9QwwC%2BH9gciNsO85T%2FAmQP7q3J1HQNAKzDMAX4XzoEMoo%2FqRBb2AASaos0zjgfMNSvpShVEtrADaJncUk9zv5o%2FCOt1I%2BYHTpYU8eTArzh8KBYpHvcWVgBxTGBJg%2F7UYs3TI5vrKldmbMJJgFxRdnWnzrLvmcC%2BtmThcG%2Faag15o1a5cLbMRqlMBL3qfXjkhDlqY53wi1phQugFB0SVt2gVNLajRsPnOCn94Qp8AtI37s5gMmWsAiVaAD89zS9DLYgWggpaL%2FFMn1T8LRApbPrViPfs0uR4UaaYXcSh1bH1NLxk6P%2Fne7n0IcNSTB%2FU%2BcJOqNux2M%3D";
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDuxCL%2F5vl4qY9o9Kh3TKIgjaiR1un9Za0pDTlVouHnEGhnQ4pQb2lvDEH5TxNpzvN%2Belh%2BMoXgLOjIfYeJSZ3i9Ab35bZyI3bPRi0HqmtksH%2B3kTCkw2gV%2FNoJqx%2BpA2816NSiotQYeIj6Q%2B6zAg6iT%2BueUUMohvAE5L9sTeq9zwJxNIyQ7q71OdE41p85h7I%2Fy5Wqql8aGywG9QwwC%2BH9gciNsO85T%2FAmQP7q3J1HQNAKzDMAX4XzoEMoo%2FqRBb2AASaos0zjgfMNSvpShVEtrADaJncUk9zv5o%2FCOt1I%2BYHTpYU8eTArzh8KBYpHvcWVgBxTGBJg%2F7UYs3TI5vrKldmbMJJgFxRdnWnzrLvmcC%2BtmThcG%2Faag15o1a5cLbMRqlMBL3qfXjkhDlqY53wi1phQugFB0SVt2gVNLajRsPnOCn94Qp8AtI37s5gMmWsAiVaAD89zS9DLYgWggpaL%2FFMn1T8LRApbPrViPfs0uR4UaaYXcSh1bH1NLxk6P%2Fne7n0IcNSTB%2FU%2BcJOqNux2M=";
         window.__genspark_locale = "en-US";
         window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDuxCL/5vl4qY9o9Kh3TKIgjaiR1un9Za0pDTlVouHnEGhnQ4pQb2lvDEH5TxNpzvN+elh+MoXgLOjIfYeJSZ3i9Ab35bZyI3bPRi0HqmtksH+3kTCkw2gV/NoJqx+pA2816NSiotQYeIj6Q+6zAg6iT+ueUUMohvAE5L9sTeq9zwJxNIyQ7q71OdE41p85h7I/y5Wqql8aGywG9QwwC+H9gciNsO85T/AmQP7q3J1HQNAKzDMAX4XzoEMoo/qRBb2AASaos0zjgfMNSvpShVEtrADaJncUk9zv5o/COt1I+YHTpYU8eTArzh8KBYpHvcWVgBxTGBJg/7UYs3TI5vrKldmbMJJgFxRdnWnzrLvmcC+tmThcG/aag15o1a5cLbMRqlMBL3qfXjkhDlqY53wi1phQugFB0SVt2gVNLajRsPnOCn94Qp8AtI37s5gMmWsAiVaAD89zS9DLYgWggpaL/FMn1T8LRApbPrViPfs0uR4UaaYXcSh1bH1NLxk6P/ne7n0IcNSTB/U+cJOqNux2M=";
     </script>
