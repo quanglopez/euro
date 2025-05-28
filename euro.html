@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eurowindow Sport Garden - Khu đô thị thể thao hiện đại</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-banner {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3));
+        }
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #059669;
+        }
+        .property-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .green-living-bg {
+            background: linear-gradient(135deg, #065f46 0%, #059669 100%);
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .facility-icon {
+            width: 60px;
+            height: 60px;
+            background: #ecfdf5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        /* Financial Calculator Styles */
+        .calculator-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .calculator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .calculator-input {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+        }
+        .calculator-input:focus {
+            border-color: #059669;
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+        .result-card {
+            background: linear-gradient(135deg, #059669 0%, #065f46 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+        .tab-button {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .tab-button.active {
+            background: #059669;
+            color: white;
+            border-color: #059669;
+        }
+        .tab-button:hover:not(.active) {
+            border-color: #059669;
+            color: #059669;
+        }
+
+        /* Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #059669, #065f46);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(5, 150, 105, 0.4);
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3), 0 0 0 0 rgba(5, 150, 105, 0.7);
+            }
+            70% {
+                box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3), 0 0 0 10px rgba(5, 150, 105, 0);
+            }
+            100% {
+                box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3), 0 0 0 0 rgba(5, 150, 105, 0);
+            }
+        }
+        
+        .chatbot-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(0.8) translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .chatbot-window.active {
+            display: flex;
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        
+        .chatbot-header {
+            background: linear-gradient(135deg, #059669, #065f46);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .chatbot-header .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+        
+        .chatbot-header .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+        
+        .message.bot {
+            background: #f3f4f6;
+            color: #374151;
+            align-self: flex-start;
+            border-bottom-left-radius: 6px;
+        }
+        
+        .message.user {
+            background: #059669;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 6px;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border-radius: 18px;
+            border-bottom-left-radius: 6px;
+            align-self: flex-start;
+            max-width: 80px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #9ca3af;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        .chatbot-input-container {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chatbot-input {
+            flex: 1;
+            border: 1px solid #d1d5db;
+            border-radius: 25px;
+            padding: 12px 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .chatbot-input:focus {
+            border-color: #059669;
+        }
+        
+        .chatbot-send {
+            background: #059669;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .chatbot-send:hover:not(:disabled) {
+            background: #047857;
+        }
+        
+        .chatbot-send:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .quick-action-btn {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-action-btn:hover {
+            background: #059669;
+            color: white;
+            border-color: #059669;
+        }
+
+        @media (max-width: 768px) {
+            .chatbot-window {
+                width: calc(100vw - 40px);
+                height: 70vh;
+                right: 20px;
+                left: 20px;
+                bottom: 80px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-2xl font-bold text-green-600">
+                    Eurowindow Sport Garden
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-green-600 transition">Trang chủ</a>
+                    <a href="#overview" class="text-gray-700 hover:text-green-600 transition">Tổng quan</a>
+                    <a href="#location" class="text-gray-700 hover:text-green-600 transition">Vị trí</a>
+                    <a href="#products" class="text-gray-700 hover:text-green-600 transition">Sản phẩm</a>
+                    <a href="#calculator" class="text-gray-700 hover:text-green-600 transition">Công cụ tài chính</a>
+                    <a href="#news" class="text-gray-700 hover:text-green-600 transition">Tin tức</a>
+                    <a href="#contact" class="text-gray-700 hover:text-green-600 transition">Liên hệ</a>
+                </div>
+                <button class="md:hidden">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen">
+        <div class="absolute inset-0 hero-banner">
+            <img src="https://eurowindowsportgarden.vn/public/upload/Banner/banner%20web%206_1.5-01.jpg" 
+                 alt="Eurowindow Sport Garden" 
+                 class="w-full h-full object-cover">
+        </div>
+        <div class="relative z-10 flex items-center justify-center h-full text-center text-white">
+            <div class="container mx-auto px-4">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
+                    SỐNG XANH
+                    <br>SỐNG KHỎE
+                    <br>SỐNG HẠNH PHÚC
+                </h1>
+                <p class="text-2xl md:text-3xl mb-8 animate-fade-in">
+                    sống hạnh phúc trong từng khoảnh khắc
+                </p>
+                <p class="text-lg md:text-xl max-w-4xl mx-auto mb-12 leading-relaxed animate-fade-in">
+                    Trong guồng quay hối hả của cuộc sống hiện đại, con người ngày càng đối mặt với nhiều thách thức về sức khỏe do ô nhiễm không khí, áp lực công việc và lối sống thiếu vận động.
+                </p>
+                <button class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition animate-fade-in">
+                    Xem chi tiết
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section id="overview" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 section-title">Tổng quan dự án</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <img src="https://eurowindowsportgarden.vn/public/upload/Banner/banner%20web%204-01_1_1.jpg" 
+                         alt="Tổng quan dự án" 
+                         class="w-full rounded-lg shadow-lg">
+                </div>
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <div class="flex justify-between">
+                                <span class="font-semibold text-gray-700">Đơn vị phát triển:</span>
+                                <span class="text-green-600">Eurowindow Holding</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <div class="flex justify-between">
+                                <span class="font-semibold text-gray-700">Vị trí:</span>
+                                <span class="text-green-600">Đường Trần Nguyên Hãn, TP.Vinh, Nghệ An</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <div class="flex justify-between">
+                                <span class="font-semibold text-gray-700">Quy mô:</span>
+                                <span class="text-green-600">37,85 ha</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-semibold text-gray-700 mb-4">Loại hình sản phẩm:</h4>
+                        <ul class="space-y-2">
+                            <li><span class="text-green-600">•</span> Biệt thự: 121 căn</li>
+                            <li><span class="text-green-600">•</span> Liền kề: 476 căn</li>
+                            <li><span class="text-green-600">•</span> Căn hộ chung cư: 456 căn</li>
+                            <li><span class="text-green-600">•</span> Shophouse khối đế: 34 căn</li>
+                            <li><span class="text-green-600">•</span> Shophouse: 66 căn</li>
+                            <li><span class="text-green-600">•</span> Shophouse 2 mặt tiền: 164 căn</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="location" class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 section-title">VỊ TRÍ TRUNG TÂM THÀNH PHỐ VINH</h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Tọa lạc tại vị trí trung tâm thành phố Vinh, cắt giữa đường Trần Nguyên Hãn và đại lộ Vinh Quang, 
+                    từ khu đô thị Eurowindow Sport Garden, cộng đồng cư dân dễ dàng tiếp cận các tiện ích chỉ trong bán kính hơn 1km.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <img src="https://eurowindowsportgarden.vn/public/upload/ESG_ban%20do_040925-01.jpg" 
+                         alt="Bản đồ vị trí" 
+                         class="w-full rounded-lg shadow-lg">
+                </div>
+                <div>
+                    <img src="https://eurowindowsportgarden.vn/public/upload/Banner/banner%20web%202-01%20(1).jpg" 
+                         alt="Vị trí dự án" 
+                         class="w-full rounded-lg shadow-lg">
+                </div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-green-50 p-8 rounded-lg text-center">
+                    <div class="text-4xl font-bold text-green-600 mb-2">1km</div>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-shopping-cart text-green-600"></i>
+                            <span>Đại siêu thị GO!</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-store text-green-600"></i>
+                            <span>Chợ Vinh</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-road text-green-600"></i>
+                            <span>Quốc lộ 46A</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-film text-green-600"></i>
+                            <span>Lotte Cinema Vinh</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-blue-50 p-8 rounded-lg text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">5km</div>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-shopping-bag text-blue-600"></i>
+                            <span>Lotte Mart Vinh</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-tree text-blue-600"></i>
+                            <span>Công viên Trung tâm</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-hospital text-blue-600"></i>
+                            <span>Bệnh viện Đa khoa TP Vinh</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-hospital text-blue-600"></i>
+                            <span>BV Hữu nghị Nghệ An</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-purple-50 p-8 rounded-lg text-center">
+                    <div class="text-4xl font-bold text-purple-600 mb-2">8km</div>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-plane text-purple-600"></i>
+                            <span>Cảng hàng không Vinh</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-bridge-water text-purple-600"></i>
+                            <span>Cầu Bến Thủy</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-2">
+                            <i class="fas fa-place-of-worship text-purple-600"></i>
+                            <span>Đền ông Hoàng Mười</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Green Living Section -->
+    <section class="py-20 green-living-bg text-white">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-6">SỐNG XANH<br>KHÔNG GIAN TRONG LÀNH<br>BỀN VỮNG</h2>
+                    <p class="text-lg mb-6 leading-relaxed">
+                        Sống xanh không chỉ là sống trong không gian nhiều cây xanh, mà là sống trong công trình xanh 
+                        bao gồm cảnh quan xanh và các vật liệu xây dựng xanh giúp hạn chế tối đa tác động tiêu cực đến môi trường.
+                    </p>
+                    <p class="text-lg leading-relaxed">
+                        Eurowindow Sport Garden đáp ứng tiêu chí công trình xanh với cảnh quan xanh bao phủ bởi 4ha công viên, 
+                        vườn hoa, thảm thực vật đa tầng; sử dụng vật liệu xây dựng thân thiện môi trường và năng lượng tái tạo.
+                    </p>
+                </div>
+                <div>
+                    <img src="https://eurowindowsportgarden.vn/public/upload/Banner/songxanh_2.jpg" 
+                         alt="Sống xanh" 
+                         class="w-full rounded-lg shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Healthy Living Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <img src="https://eurowindowsportgarden.vn/public/upload/Banner/songkhoe.jpg" 
+                         alt="Sống khỏe" 
+                         class="w-full rounded-lg shadow-lg">
+                </div>
+                <div>
+                    <h2 class="text-4xl font-bold text-gray-800 mb-6">SỐNG KHỎE<br>NĂNG LƯỢNG TRÀN ĐẦY<br>TỪ MỌI HOẠT ĐỘNG</h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        Eurowindow Sport Garden kiến tạo không gian sống lành mạnh, tăng cường các hoạt động thể chất 
+                        thường xuyên giúp cơ thể dẻo dai, tăng cường miễn dịch và giảm căng thẳng.
+                    </p>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        Lần đầu tiên tại trung tâm thành phố Vinh, công viên thể thao rộng 20.000m² quy tụ 20 bộ môn, 
+                        từ sân tập golf, tennis, bóng rổ đến tổ hợp thể thao trong nhà với bể bơi 4 mùa.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 section-title">GẦN 100 TIỆN ÍCH NỘI KHU ĐA DẠNG</h2>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center p-6">
+                    <div class="facility-icon">
+                        <i class="fas fa-school text-green-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Trường mầm non</h4>
+                </div>
+                <div class="text-center p-6">
+                    <div class="facility-icon">
+                        <i class="fas fa-seedling text-green-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Vườn Xuân Lạc</h4>
+                </div>
+                <div class="text-center p-6">
+                    <div class="facility-icon">
+                        <i class="fas fa-leaf text-green-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Vườn Xuân An</h4>
+                </div>
+                <div class="text-center p-6">
+                    <div class="facility-icon">
+                        <i class="fas fa-building text-green-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Tiện ích HH1</h4>
+                </div>
+                <div class="text-center p-6">
+                    <div class="facility-icon">
+                        <i class="fas fa-flower text-green-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Vườn Minh Châu</h4>
+                </div>
+                <div class="text-center p-6">
+                    <div class="facility-icon">
+                        <i class="fas fa-tree text-green-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Vườn Trường Thọ</h4>
+                </div>
+                <div class="text-center p-6">
+                    <div class="facility-icon">
+                        <i class="fas fa-dumbbell text-green-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Cung thể thao</h4>
+                </div>
+                <div class="text-center p-6">
+                    <div class="facility-icon">
+                        <i class="fas fa-home text-green-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Nhà văn hóa</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 section-title">Sản phẩm</h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Eurowindow Sport Garden sở hữu đa dạng sản phẩm, bao gồm: Liền kề, biệt thự, căn hộ chung cư, 
+                    shophouse khối đế, shophouse và shophouse 2 mặt tiền kết hợp phố đi bộ có mái che.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Villa -->
+                <div class="property-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="https://eurowindowsportgarden.vn/public/upload/S%E1%BA%A3n%20ph%E1%BA%A9m/Bi%E1%BB%87t%20th%E1%BB%B1/SG_PV07_CX56_T.jpg" 
+                         alt="Biệt thự" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">BIỆT THỰ</h3>
+                        <p class="text-gray-600 mb-4">
+                            Sản phẩm biệt thự gồm 121 căn, cao 3 tầng, mặt tiền 8,5m có diện tích 242,46m² - 413,69m²
+                        </p>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li>• Tầng 1: Sảnh, phòng khách, bếp, phòng ăn</li>
+                            <li>• Tầng 2: 2 phòng ngủ có vệ sinh và ban công</li>
+                            <li>• Tầng 3: Phòng thờ, 2 phòng ngủ, sân phơi</li>
+                        </ul>
+                        <div class="mt-4 text-lg font-bold text-green-600">Từ 8-15 tỷ VNĐ</div>
+                        <button class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                            Xem chi tiết
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Townhouse -->
+                <div class="property-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="https://eurowindowsportgarden.vn/public/upload/S%E1%BA%A3n%20ph%E1%BA%A9m/Shophouse/hh%200001.jpg" 
+                         alt="Liền kề" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">LIỀN KỀ</h3>
+                        <p class="text-gray-600 mb-4">
+                            Sản phẩm liền kề gồm 476 căn thiết kế cao 4 tầng, mặt tiền 6m, diện tích 102m² - 228,47m²
+                        </p>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li>• Tầng 1: Kinh doanh</li>
+                            <li>• Tầng 2: Phòng khách, bếp, 1 phòng ngủ</li>
+                            <li>• Tầng 3: 2 phòng ngủ có phòng thay đồ</li>
+                            <li>• Tầng 4: Phòng thờ, sân thượng</li>
+                        </ul>
+                        <div class="mt-4 text-lg font-bold text-green-600">Từ 4-8 tỷ VNĐ</div>
+                        <button class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                            Xem chi tiết
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Apartment -->
+                <div class="property-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="https://eurowindowsportgarden.vn/public/upload/S%E1%BA%A3n%20ph%E1%BA%A9m/C%C4%83n%20h%E1%BB%99%20chung%20c%C6%B0/SG_PV03_tongthe3.jpg" 
+                         alt="Căn hộ chung cư" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">CĂN HỘ CHUNG CƯ</h3>
+                        <p class="text-gray-600 mb-4">
+                            Căn hộ chung cư gồm 456 căn, chủ yếu là căn 2 phòng ngủ. Diện tích từ 40,6m² – 63,9m²
+                        </p>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li>• Phòng ngủ đều có cửa sổ đón sáng tự nhiên</li>
+                            <li>• Phòng khách kết nối với logia</li>
+                            <li>• Thiết kế thông minh tối ưu công năng</li>
+                            <li>• Không gian rộng rãi, thoáng đãng</li>
+                        </ul>
+                        <div class="mt-4 text-lg font-bold text-green-600">Từ 1.5-3 tỷ VNĐ</div>
+                        <button class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                            Xem chi tiết
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Shophouse Base -->
+                <div class="property-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="https://eurowindowsportgarden.vn/public/upload/S%E1%BA%A3n%20ph%E1%BA%A9m/Shophouse%20kh%E1%BB%91i%20%C4%91%E1%BA%BF/Nha%20HH%20(4).jpg" 
+                         alt="Shop khối đế" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">SHOP KHỐI ĐẾ</h3>
+                        <p class="text-gray-600 mb-4">
+                            Shophouse khối đế gồm 34 căn, cao 3 tầng, mặt tiền 8m-12m, diện tích 48,9m² – 87m²
+                        </p>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li>• Tầng 1: Kinh doanh</li>
+                            <li>• Tầng 2: 1 phòng ngủ, phòng khách, bếp</li>
+                            <li>• Tầng 3: 2 phòng ngủ có ban công</li>
+                            <li>• Lối đi riêng tách biệt khu kinh doanh</li>
+                        </ul>
+                        <div class="mt-4 text-lg font-bold text-green-600">Từ 3-6 tỷ VNĐ</div>
+                        <button class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                            Xem chi tiết
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Shophouse -->
+                <div class="property-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="https://eurowindowsportgarden.vn/public/upload/S%E1%BA%A3n%20ph%E1%BA%A9m/Shophouse/V4.png" 
+                         alt="Shophouse" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">SHOPHOUSE</h3>
+                        <p class="text-gray-600 mb-4">
+                            Shophouse gồm 66 căn cao 4 tầng, mặt tiền 5m-13m, diện tích 48,9m² - 68,9m²
+                        </p>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li>• Tầng 1: Kinh doanh</li>
+                            <li>• Tầng 2: 1 phòng ngủ, phòng khách, bếp</li>
+                            <li>• Tầng 3: 2 phòng ngủ có vệ sinh riêng</li>
+                            <li>• Tầng 4: Phòng thờ, sân thượng</li>
+                        </ul>
+                        <div class="mt-4 text-lg font-bold text-green-600">Từ 3-6 tỷ VNĐ</div>
+                        <button class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                            Xem chi tiết
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Shophouse 2 Fronts -->
+                <div class="property-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="https://eurowindowsportgarden.vn/public/upload/S%E1%BA%A3n%20ph%E1%BA%A9m/Shophouse/hh%200001.jpg" 
+                         alt="Shophouse 2 mặt tiền" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">SHOPHOUSE HAI MẶT TIỀN</h3>
+                        <p class="text-gray-600 mb-4">
+                            164 shophouse 2 mặt tiền kết hợp phố đi bộ có mái che, diện tích 120m² - 225,13m²
+                        </p>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li>• Mặt ngoài: Trần Nguyên Hãn, Lạc Long Quân</li>
+                            <li>• Mặt trong: Phố đi bộ, chợ đêm</li>
+                            <li>• Thiết kế thang máy</li>
+                            <li>• Tiềm năng sinh lời vượt trội</li>
+                        </ul>
+                        <div class="mt-4 text-lg font-bold text-green-600">Từ 4-10 tỷ VNĐ</div>
+                        <button class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                            Xem chi tiết
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Financial Calculator Section -->
+    <section id="calculator" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 section-title">Công cụ tài chính</h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Sử dụng các công cụ tài chính chuyên nghiệp để tính toán khoản vay và phân tích đầu tư bất động sản
+                </p>
+            </div>
+
+            <!-- Calculator Tabs -->
+            <div class="flex justify-center mb-8">
+                <div class="flex space-x-4">
+                    <button onclick="switchTab('loan')" class="tab-button active" id="loanTab">
+                        <i class="fas fa-calculator mr-2"></i>Tính toán khoản vay
+                    </button>
+                    <button onclick="switchTab('investment')" class="tab-button" id="investmentTab">
+                        <i class="fas fa-chart-line mr-2"></i>Phân tích đầu tư
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loan Calculator -->
+            <div id="loanCalculator" class="calculator-section">
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Input Section -->
+                    <div class="lg:col-span-2">
+                        <div class="calculator-card p-8">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                                <i class="fas fa-calculator text-green-600 mr-3"></i>
+                                Tính toán khoản vay mua nhà
+                            </h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Giá trị bất động sản (VNĐ)</label>
+                                    <input type="number" id="propertyValue" class="w-full calculator-input" 
+                                           placeholder="5,000,000,000" value="5000000000" oninput="calculateLoan()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Vốn tự có (%)</label>
+                                    <input type="number" id="downPaymentPercent" class="w-full calculator-input" 
+                                           placeholder="30" value="30" min="0" max="100" oninput="calculateLoan()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Lãi suất năm (%)</label>
+                                    <input type="number" id="interestRate" class="w-full calculator-input" 
+                                           placeholder="8.5" value="8.5" step="0.1" oninput="calculateLoan()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Thời hạn vay (năm)</label>
+                                    <input type="number" id="loanTerm" class="w-full calculator-input" 
+                                           placeholder="20" value="20" min="1" max="30" oninput="calculateLoan()">
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8">
+                                <h4 class="text-lg font-semibold text-gray-800 mb-4">Chọn sản phẩm:</h4>
+                                <div class="grid md:grid-cols-3 gap-4">
+                                    <button onclick="setPropertyPrice(2000000000)" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
+                                        <div class="font-semibold">Căn hộ</div>
+                                        <div class="text-sm text-gray-600">1.5-3 tỷ VNĐ</div>
+                                    </button>
+                                    <button onclick="setPropertyPrice(6000000000)" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
+                                        <div class="font-semibold">Liền kề</div>
+                                        <div class="text-sm text-gray-600">4-8 tỷ VNĐ</div>
+                                    </button>
+                                    <button onclick="setPropertyPrice(10000000000)" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
+                                        <div class="font-semibold">Biệt thự</div>
+                                        <div class="text-sm text-gray-600">8-15 tỷ VNĐ</div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div>
+                        <div class="result-card mb-6">
+                            <h4 class="text-lg font-semibold mb-4">Kết quả tính toán</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="text-sm opacity-90">Số tiền vay</div>
+                                    <div class="text-2xl font-bold" id="loanAmount">3,500,000,000 VNĐ</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm opacity-90">Trả góp hàng tháng</div>
+                                    <div class="text-2xl font-bold" id="monthlyPayment">29,200,000 VNĐ</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm opacity-90">Tổng lãi phải trả</div>
+                                    <div class="text-xl font-semibold" id="totalInterest">3,508,000,000 VNĐ</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm opacity-90">Tổng số tiền trả</div>
+                                    <div class="text-xl font-semibold" id="totalPayment">7,008,000,000 VNĐ</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h4 class="font-semibold text-gray-800 mb-4">Biểu đồ thanh toán</h4>
+                            <canvas id="loanChart" width="300" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Investment Calculator -->
+            <div id="investmentCalculator" class="calculator-section hidden">
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Input Section -->
+                    <div class="lg:col-span-2">
+                        <div class="calculator-card p-8">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                                <i class="fas fa-chart-line text-green-600 mr-3"></i>
+                                Phân tích đầu tư bất động sản
+                            </h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Giá mua ban đầu (VNĐ)</label>
+                                    <input type="number" id="purchasePrice" class="w-full calculator-input" 
+                                           placeholder="5,000,000,000" value="5000000000" oninput="calculateInvestment()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tăng giá hàng năm (%)</label>
+                                    <input type="number" id="appreciation" class="w-full calculator-input" 
+                                           placeholder="8" value="8" step="0.1" oninput="calculateInvestment()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Thu nhập cho thuê/tháng (VNĐ)</label>
+                                    <input type="number" id="monthlyRent" class="w-full calculator-input" 
+                                           placeholder="20,000,000" value="20000000" oninput="calculateInvestment()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Thời gian đầu tư (năm)</label>
+                                    <input type="number" id="investmentPeriod" class="w-full calculator-input" 
+                                           placeholder="10" value="10" min="1" max="30" oninput="calculateInvestment()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Chi phí quản lý/năm (%)</label>
+                                    <input type="number" id="managementFee" class="w-full calculator-input" 
+                                           placeholder="2" value="2" step="0.1" oninput="calculateInvestment()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Thuế bán nhà (%)</label>
+                                    <input type="number" id="sellingTax" class="w-full calculator-input" 
+                                           placeholder="2" value="2" step="0.1" oninput="calculateInvestment()">
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8">
+                                <h4 class="text-lg font-semibold text-gray-800 mb-4">Kịch bản thị trường:</h4>
+                                <div class="grid md:grid-cols-3 gap-4">
+                                    <button onclick="setMarketScenario('conservative')" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
+                                        <div class="font-semibold">Bảo thủ</div>
+                                        <div class="text-sm text-gray-600">Tăng 5%/năm</div>
+                                    </button>
+                                    <button onclick="setMarketScenario('moderate')" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
+                                        <div class="font-semibold">Trung bình</div>
+                                        <div class="text-sm text-gray-600">Tăng 8%/năm</div>
+                                    </button>
+                                    <button onclick="setMarketScenario('optimistic')" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
+                                        <div class="font-semibold">Lạc quan</div>
+                                        <div class="text-sm text-gray-600">Tăng 12%/năm</div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div>
+                        <div class="result-card mb-6">
+                            <h4 class="text-lg font-semibold mb-4">Kết quả đầu tư</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="text-sm opacity-90">Giá trị sau 10 năm</div>
+                                    <div class="text-2xl font-bold" id="futureValue">10,794,624,000 VNĐ</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm opacity-90">Tổng thu nhập cho thuê</div>
+                                    <div class="text-xl font-semibold" id="totalRental">2,400,000,000 VNĐ</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm opacity-90">Lợi nhuận ròng</div>
+                                    <div class="text-xl font-semibold" id="netProfit">7,594,624,000 VNĐ</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm opacity-90">ROI (%)</div>
+                                    <div class="text-xl font-semibold" id="roi">151.9%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h4 class="font-semibold text-gray-800 mb-4">Biểu đồ tăng trưởng</h4>
+                            <canvas id="investmentChart" width="300" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section id="news" class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 section-title">Tin tức</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="font-semibold text-gray-800 mb-3 line-clamp-3">
+                            Sống xanh - sống khỏe - sống hạnh phúc: Ba thước đo giá trị bất động sản của giới thượng lưu
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Giới thượng lưu và những người thành đạt thường bận rộn cùng áp lực lớn, vì vậy không gian sống họ lựa chọn thường là nơi xanh mát, yên bình...
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">12/05/2025</span>
+                            <a href="#" class="text-green-600 hover:text-green-700 text-sm font-semibold">Xem thêm</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="font-semibold text-gray-800 mb-3 line-clamp-3">
+                            EUROWINDOW SPORT GARDEN - phong cách sống xanh, sống khỏe, sống hạnh phúc
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Khu đô thị thể thao hiện đại với phong cách sống xanh, sống khỏe, sống hạnh phúc tại trung tâm thành phố Vinh...
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">27/05/2025</span>
+                            <a href="#" class="text-green-600 hover:text-green-700 text-sm font-semibold">Xem thêm</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="font-semibold text-gray-800 mb-3 line-clamp-3">
+                            BIDV tài trợ tín dụng và bảo lãnh cho dự án khu đô thị Eurowindow Sport Garden
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Sáng ngày 28/3/2025, tại Hà Nội, Ngân hàng TMCP Đầu tư và Phát triển Việt Nam (BIDV) và Công ty...
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">31/03/2025</span>
+                            <a href="#" class="text-green-600 hover:text-green-700 text-sm font-semibold">Xem thêm</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="font-semibold text-gray-800 mb-3 line-clamp-3">
+                            Bất động sản thành phố Vinh "trỗi dậy", cơ hội "vàng" cho nhà đầu tư
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Sự phát triển mạnh mẽ của hạ tầng, trong khi giá bất động sản đang ở ngưỡng hợp lý là lực đẩy quan trọng...
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">16/05/2025</span>
+                            <a href="#" class="text-green-600 hover:text-green-700 text-sm font-semibold">Xem thêm</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="text-center mt-12">
+                <button class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition">
+                    Xem tất cả tin tức
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-800 text-white">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Liên hệ với chúng tôi</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-map-marker-alt text-green-500"></i>
+                            <span>Đường Trần Nguyên Hãn, Phường Thành Vinh, TP.Vinh, Nghệ An</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-phone text-green-500"></i>
+                            <span>0976452486</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-envelope text-green-500"></i>
+                            <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6c05020a032c09191e031b050208031b1f1c031e180b0d1e080902420e0516">[email&#160;protected]</a></span>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <h3 class="text-xl font-semibold mb-4">Theo dõi chúng tôi</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-green-500 hover:text-green-400 text-2xl">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="#" class="text-green-500 hover:text-green-400 text-2xl">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="#" class="text-green-500 hover:text-green-400 text-2xl">
+                                <i class="fab fa-zalo"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <form class="space-y-6">
+                        <div>
+                            <input type="text" placeholder="Họ và tên" 
+                                   class="w-full px-4 py-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                        <div>
+                            <input type="tel" placeholder="Số điện thoại" 
+                                   class="w-full px-4 py-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                        <div>
+                            <input type="email" placeholder="Email" 
+                                   class="w-full px-4 py-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                        <div>
+                            <textarea placeholder="Nội dung" rows="4" 
+                                      class="w-full px-4 py-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
+                        </div>
+                        <button type="submit" 
+                                class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition">
+                            Gửi thông tin
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-green-500 mb-4">Eurowindow Sport Garden</h3>
+                    <p class="text-gray-400">
+                        Khu đô thị thể thao hiện đại - Sống xanh, sống khỏe, sống hạnh phúc
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Sản phẩm</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-green-500">Biệt thự</a></li>
+                        <li><a href="#" class="hover:text-green-500">Liền kề</a></li>
+                        <li><a href="#" class="hover:text-green-500">Căn hộ chung cư</a></li>
+                        <li><a href="#" class="hover:text-green-500">Shophouse</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Thông tin</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-green-500">Tổng quan dự án</a></li>
+                        <li><a href="#" class="hover:text-green-500">Vị trí</a></li>
+                        <li><a href="#" class="hover:text-green-500">Tiện ích</a></li>
+                        <li><a href="#" class="hover:text-green-500">Tin tức</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Liên hệ</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Hotline: 0976452486</li>
+                        <li>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="60090e060f200515120f17090e040f1713100f121407011204050e4e02091a">[email&#160;protected]</a></li>
+                        <li>Địa chỉ: TP.Vinh, Nghệ An</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Eurowindow Sport Garden. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Contact Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <a href="tel:0976452486" class="bg-green-600 hover:bg-green-700 text-white p-4 rounded-full shadow-lg transition block">
+            <i class="fas fa-phone text-xl"></i>
+        </a>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="fixed bottom-20 right-6 z-50">
+        <button onclick="scrollToTop()" class="bg-gray-800 hover:bg-gray-700 text-white p-3 rounded-full shadow-lg transition opacity-0" id="scrollBtn">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <!-- AI Chatbot -->
+    <div class="chatbot-container">
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-robot text-white"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold">Tư vấn viên AI</h4>
+                        <p class="text-sm opacity-90">Eurowindow Sport Garden</p>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeChatbot()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot">
+                    Xin chào! Tôi là tư vấn viên AI của Eurowindow Sport Garden. Tôi có thể giúp bạn tìm hiểu về dự án và các sản phẩm. Bạn muốn biết thông tin gì?
+                </div>
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="sendQuickMessage('Tôi muốn biết về giá bán')">💰 Giá bán</button>
+                    <button class="quick-action-btn" onclick="sendQuickMessage('Tôi muốn xem sản phẩm biệt thự')">🏠 Biệt thự</button>
+                    <button class="quick-action-btn" onclick="sendQuickMessage('Thông tin về vị trí dự án')">📍 Vị trí</button>
+                    <button class="quick-action-btn" onclick="sendQuickMessage('Công cụ tính toán khoản vay')">🧮 Tính toán</button>
+                </div>
+            </div>
+            
+            <div class="chatbot-input-container">
+                <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Nhập câu hỏi của bạn..." onkeypress="handleEnterKey(event)">
+                <button class="chatbot-send" id="sendBtn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="chatbot-toggle" onclick="toggleChatbot()">
+            <i class="fas fa-comments text-white text-2xl"></i>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        let chatbotOpen = false;
+        let loanChart, investmentChart;
+        
+        // Financial Calculator Functions
+        function switchTab(tab) {
+            const loanTab = document.getElementById('loanTab');
+            const investmentTab = document.getElementById('investmentTab');
+            const loanCalculator = document.getElementById('loanCalculator');
+            const investmentCalculator = document.getElementById('investmentCalculator');
+            
+            if (tab === 'loan') {
+                loanTab.classList.add('active');
+                investmentTab.classList.remove('active');
+                loanCalculator.classList.remove('hidden');
+                investmentCalculator.classList.add('hidden');
+                setTimeout(() => {
+                    calculateLoan();
+                }, 100);
+            } else {
+                investmentTab.classList.add('active');
+                loanTab.classList.remove('active');
+                investmentCalculator.classList.remove('hidden');
+                loanCalculator.classList.add('hidden');
+                setTimeout(() => {
+                    calculateInvestment();
+                }, 100);
+            }
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN').format(amount) + ' VNĐ';
+        }
+
+        function setPropertyPrice(price) {
+            document.getElementById('propertyValue').value = price;
+            document.getElementById('purchasePrice').value = price;
+            calculateLoan();
+            calculateInvestment();
+        }
+
+        function setMarketScenario(scenario) {
+            const appreciationInput = document.getElementById('appreciation');
+            switch(scenario) {
+                case 'conservative':
+                    appreciationInput.value = 5;
+                    break;
+                case 'moderate':
+                    appreciationInput.value = 8;
+                    break;
+                case 'optimistic':
+                    appreciationInput.value = 12;
+                    break;
+            }
+            calculateInvestment();
+        }
+
+        function calculateLoan() {
+            const propertyValue = parseFloat(document.getElementById('propertyValue').value) || 0;
+            const downPaymentPercent = parseFloat(document.getElementById('downPaymentPercent').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const loanTermYears = parseFloat(document.getElementById('loanTerm').value) || 0;
+
+            const downPayment = propertyValue * (downPaymentPercent / 100);
+            const loanAmount = propertyValue - downPayment;
+            const monthlyRate = (interestRate / 100) / 12;
+            const numPayments = loanTermYears * 12;
+
+            let monthlyPayment = 0;
+            if (monthlyRate > 0) {
+                monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+                                (Math.pow(1 + monthlyRate, numPayments) - 1);
+            } else {
+                monthlyPayment = loanAmount / numPayments;
+            }
+
+            const totalPayment = monthlyPayment * numPayments;
+            const totalInterest = totalPayment - loanAmount;
+
+            document.getElementById('loanAmount').textContent = formatCurrency(loanAmount);
+            document.getElementById('monthlyPayment').textContent = formatCurrency(monthlyPayment);
+            document.getElementById('totalInterest').textContent = formatCurrency(totalInterest);
+            document.getElementById('totalPayment').textContent = formatCurrency(totalPayment);
+
+            updateLoanChart(loanAmount, totalInterest);
+        }
+
+        function calculateInvestment() {
+            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+            const appreciation = parseFloat(document.getElementById('appreciation').value) || 0;
+            const monthlyRent = parseFloat(document.getElementById('monthlyRent').value) || 0;
+            const investmentPeriod = parseFloat(document.getElementById('investmentPeriod').value) || 0;
+            const managementFee = parseFloat(document.getElementById('managementFee').value) || 0;
+            const sellingTax = parseFloat(document.getElementById('sellingTax').value) || 0;
+
+            const futureValue = purchasePrice * Math.pow(1 + appreciation / 100, investmentPeriod);
+            const totalRental = monthlyRent * 12 * investmentPeriod;
+            const managementCosts = totalRental * (managementFee / 100);
+            const netRental = totalRental - managementCosts;
+            const sellingCosts = futureValue * (sellingTax / 100);
+            const netSaleProceeds = futureValue - sellingCosts;
+            const totalReturn = netSaleProceeds + netRental;
+            const netProfit = totalReturn - purchasePrice;
+            const roi = (netProfit / purchasePrice) * 100;
+
+            document.getElementById('futureValue').textContent = formatCurrency(futureValue);
+            document.getElementById('totalRental').textContent = formatCurrency(netRental);
+            document.getElementById('netProfit').textContent = formatCurrency(netProfit);
+            document.getElementById('roi').textContent = roi.toFixed(1) + '%';
+
+            updateInvestmentChart(purchasePrice, futureValue, investmentPeriod, appreciation);
+        }
+
+        function updateLoanChart(principal, interest) {
+            const ctx = document.getElementById('loanChart').getContext('2d');
+            
+            if (loanChart) {
+                loanChart.destroy();
+            }
+
+            loanChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Gốc', 'Lãi'],
+                    datasets: [{
+                        data: [principal, interest],
+                        backgroundColor: ['#059669', '#ef4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateInvestmentChart(initial, final, years, rate) {
+            const ctx = document.getElementById('investmentChart').getContext('2d');
+            
+            if (investmentChart) {
+                investmentChart.destroy();
+            }
+
+            const data = [];
+            const labels = [];
+            for (let i = 0; i <= years; i++) {
+                labels.push(`Năm ${i}`);
+                data.push(initial * Math.pow(1 + rate / 100, i));
+            }
+
+            investmentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Giá trị tài sản',
+                        data: data,
+                        borderColor: '#059669',
+                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return (value / 1000000000).toFixed(1) + 'B';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Chatbot responses database
+        const chatbotResponses = {
+            "giá": "Giá bán các sản phẩm tại Eurowindow Sport Garden rất cạnh tranh:\n\n🏠 Biệt thự: Từ 8-15 tỷ VNĐ\n🏘️ Liền kề: Từ 4-8 tỷ VNĐ\n🏢 Căn hộ: Từ 1.5-3 tỷ VNĐ\n🏪 Shophouse: Từ 3-6 tỷ VNĐ\n\nBạn có muốn sử dụng công cụ tính toán khoản vay để biết số tiền trả góp hàng tháng không?",
+            
+            "biệt thự": "🏠 BIỆT THỰ EUROWINDOW SPORT GARDEN\n\n📏 Diện tích: 242-414m²\n🏗️ Quy mô: 121 căn, 3 tầng\n📐 Mặt tiền: 8.5m\n💰 Giá: 8-15 tỷ VNĐ\n\n✨ Đặc điểm nổi bật:\n• Thiết kế thang máy\n• Khoảng sân trước 4.5m\n• Phòng thờ riêng biệt\n• Phòng thay đồ master\n• Sân phơi mái kính thông minh\n\nBạn muốn tính toán khoản vay cho biệt thự không?",
+            
+            "liền kề": "🏘️ LIỀN KỀ EUROWINDOW SPORT GARDEN\n\n📏 Diện tích: 102-228m²\n🏗️ Quy mô: 476 căn, 4 tầng\n📐 Mặt tiền: 6m\n💰 Giá: 4-8 tỷ VNĐ\n\n✨ Thiết kế:\n• Tầng 1: Kinh doanh\n• Tầng 2: Sinh hoạt gia đình\n• Tầng 3: Phòng ngủ\n• Tầng 4: Phòng thờ + sân thượng\n\nPhù hợp vừa ở vừa kinh doanh!",
+            
+            "căn hộ": "🏢 CĂN HỘ CHUNG CƯ\n\n📏 Diện tích: 40.6-63.9m²\n🏗️ Quy mô: 456 căn\n🛏️ Chủ yếu: 2 phòng ngủ\n💰 Giá: 1.5-3 tỷ VNĐ\n\n✨ Ưu điểm:\n• Cửa sổ đón sáng tự nhiên\n• Phòng khách kết nối logia\n• Thiết kế tối ưu công năng\n• Không gian thoáng đãng",
+            
+            "shophouse": "🏪 SHOPHOUSE ĐA DẠNG\n\n1️⃣ Shophouse thường (66 căn)\n📏 Diện tích: 48.9-68.9m²\n🏗️ 4 tầng, mặt tiền 5-13m\n💰 Giá: 3-6 tỷ VNĐ\n\n2️⃣ Shophouse khối đế (34 căn)\n📏 Diện tích: 48.9-87m²\n🏗️ 3 tầng, mặt tiền 8-12m\n\n3️⃣ Shophouse 2 mặt tiền (164 căn)\n📏 Diện tích: 120-225m²\n🌟 Đặc biệt: Phố đi bộ có mái che\n💰 Giá: 4-10 tỷ VNĐ\n\nTiềm năng kinh doanh cao!",
+            
+            "vị trí": "📍 VỊ TRÍ TRUNG TÂM THÀNH PHỐ VINH\n\n🏠 Địa chỉ: Đường Trần Nguyên Hãn, TP.Vinh, Nghệ An\n\n📏 Khoảng cách thuận tiện:\n🛒 1km: Chợ Vinh, Siêu thị GO!, Lotte Cinema\n🏥 5km: Bệnh viện, Lotte Mart, Công viên TT\n✈️ 8km: Sân bay Vinh, Cầu Bến Thủy\n\nHạ tầng giao thông đồng bộ, kết nối dễ dàng!",
+            
+            "tiện ích": "🏊‍♂️ GẦN 100 TIỆN ÍCH NỘI KHU\n\n🏃‍♂️ Thể thao (20.000m²):\n• Công viên thể thao 20 môn\n• Sân golf, tennis, bóng rổ\n• Cung thể thao trong nhà\n• Bể bơi 4 mùa\n• Phòng gym, yoga\n\n🌳 Cảnh quan xanh:\n• 6 vườn hoa chủ đề\n• Công viên trung tâm 4ha\n• Thảm thực vật đa tầng\n\n🏫 Giáo dục - Y tế:\n• Trường mầm non\n• Trường tiểu học\n• Trung tâm y tế\n\nSống xanh - Sống khỏe - Sống hạnh phúc!",
+            
+            "tính toán": "🧮 CÔNG CỤ TÀI CHÍNH CHUYÊN NGHIỆP\n\nTại website, chúng tôi cung cấp 2 công cụ:\n\n💰 Công cụ tính khoản vay:\n• Tính số tiền vay cần thiết\n• Số tiền trả góp hàng tháng\n• Tổng lãi phải trả\n• Biểu đồ phân tích chi tiết\n\n📈 Công cụ phân tích đầu tư:\n• Dự báo tăng giá bất động sản\n• Tính thu nhập cho thuê\n• Phân tích ROI\n• Biểu đồ tăng trưởng\n\nBạn có thể sử dụng ngay tại mục 'Công cụ tài chính' trên website!",
+            
+            "thanh toán": "💳 CHÍNH SÁCH THANH TOÁN LINH HOẠT\n\n🏦 Hỗ trợ vay ngân hàng:\n• BIDV bảo lãnh tín dụng\n• Lãi suất ưu đãi 0% trong 24 tháng\n• Vay tối đa 70% giá trị sản phẩm\n\n💰 Phương thức thanh toán:\n• Đặt cọc: 50 triệu VNĐ\n• Ký HĐMB: 15% giá trị\n• Tiến độ xây dựng: 60%\n• Nhận nhà: 25%\n\nSử dụng công cụ tính toán để biết số tiền cần chuẩn bị!",
+            
+            "pháp lý": "📋 PHÁP LÝ MINH BẠCH\n\n✅ Giấy phép hoàn chỉnh:\n• Quyết định đầu tư\n• Giấy phép xây dựng\n• Giấy phép bán nhà ở hình thành trong tương lai\n\n🏛️ Chủ đầu tư uy tín:\n• Eurowindow Holding\n• 15+ năm kinh nghiệm\n• Đã bàn giao nhiều dự án thành công\n\nQuý khách hoàn toàn yên tâm về pháp lý!",
+            
+            "liên hệ": "📞 LIÊN HỆ TƯ VẤN TRỰC TIẾP\n\n📱 Hotline: 0976452486\n📧 Email: info@eurowindowsportgarden.biz\n📍 Địa chỉ: TP.Vinh, Nghệ An\n\n🏢 Văn phòng bán hàng:\nMở cửa: 8:00 - 20:00 hàng ngày\n\n🚗 Xe đưa đón xem dự án:\nMiễn phí vào cuối tuần\n\nHãy gọi ngay để được tư vấn chi tiết!"
+        };
+        
+        function toggleChatbot() {
+            const window = document.getElementById('chatbotWindow');
+            chatbotOpen = !chatbotOpen;
+            
+            if (chatbotOpen) {
+                window.classList.add('active');
+                document.getElementById('chatbotInput').focus();
+            } else {
+                window.classList.remove('active');
+            }
+        }
+        
+        function closeChatbot() {
+            const window = document.getElementById('chatbotWindow');
+            window.classList.remove('active');
+            chatbotOpen = false;
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chatbotInput');
+            const message = input.value.trim();
+            
+            if (message === '') return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Show typing indicator
+            showTyping();
+            
+            // Generate bot response
+            setTimeout(() => {
+                hideTyping();
+                const response = generateResponse(message);
+                addMessage(response, 'bot');
+            }, 1500);
+        }
+        
+        function sendQuickMessage(message) {
+            addMessage(message, 'user');
+            showTyping();
+            
+            setTimeout(() => {
+                hideTyping();
+                const response = generateResponse(message);
+                addMessage(response, 'bot');
+            }, 1000);
+        }
+        
+        function handleEnterKey(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = text.replace(/\n/g, '<br>');
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function showTyping() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.className = 'typing-indicator';
+            typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function hideTyping() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        function generateResponse(message) {
+            const lowercaseMessage = message.toLowerCase();
+            
+            // Check for keywords in user message
+            for (const [keyword, response] of Object.entries(chatbotResponses)) {
+                if (lowercaseMessage.includes(keyword)) {
+                    return response;
+                }
+            }
+            
+            // Default responses for common questions
+            if (lowercaseMessage.includes('xin chào') || lowercaseMessage.includes('hello') || lowercaseMessage.includes('hi')) {
+                return "Xin chào! Rất vui được hỗ trợ bạn. Tôi có thể giúp bạn tìm hiểu về dự án Eurowindow Sport Garden và sử dụng các công cụ tài chính. Bạn quan tâm đến thông tin gì?";
+            }
+            
+            if (lowercaseMessage.includes('cảm ơn') || lowercaseMessage.includes('thanks')) {
+                return "Không có gì! Rất vui được hỗ trợ bạn. Đừng quên sử dụng công cụ tài chính để tính toán khoản vay nhé! \n\nHoặc gọi trực tiếp hotline: 0976452486";
+            }
+            
+            if (lowercaseMessage.includes('tạm biệt') || lowercaseMessage.includes('bye')) {
+                return "Tạm biệt và hẹn gặp lại! Cảm ơn bạn đã quan tâm đến Eurowindow Sport Garden. Đừng quên liên hệ 0976452486 để được tư vấn chi tiết nhé!";
+            }
+            
+            // Default response
+            return "Tôi hiểu bạn đang quan tâm đến dự án. Để được tư vấn chi tiết và chính xác nhất, bạn có thể:\n\n📞 Gọi hotline: 0976452486\n📧 Email: info@eurowindowsportgarden.biz\n🧮 Sử dụng công cụ tài chính trên website\n\nHoặc hỏi tôi về: giá bán, sản phẩm, vị trí, tiện ích, thanh toán, tính toán...";
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Show/hide scroll to top button
+        window.addEventListener('scroll', function() {
+            const scrollBtn = document.getElementById('scrollBtn');
+            if (window.pageYOffset > 300) {
+                scrollBtn.style.opacity = '1';
+            } else {
+                scrollBtn.style.opacity = '0';
+            }
+        });
+
+        // Scroll to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.property-card, .facility-icon, .calculator-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Initialize calculations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateLoan();
+            calculateInvestment();
+        });
+
+        // Auto-show chatbot after 5 seconds
+        setTimeout(() => {
+            if (!chatbotOpen) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    bottom: 180px;
+                    right: 20px;
+                    background: #059669;
+                    color: white;
+                    padding: 12px 16px;
+                    border-radius: 20px;
+                    box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3);
+                    z-index: 999;
+                    font-size: 14px;
+                    max-width: 250px;
+                    animation: slideIn 0.3s ease;
+                `;
+                notification.innerHTML = '🧮 Sử dụng công cụ tài chính để tính toán khoản vay!';
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 4000);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDuxCL%2F5vl4qY9o9Kh3TKIgjaiR1un9Za0pDTlVouHnEGhnQ4pQb2lvDEH5TxNpzvN%2Belh%2BMoXgLOjIfYeJSZ3i9Ab35bZyI3bPRi0HqmtksH%2B3kTCkw2gV%2FNoJqx%2BpA2816NSiotQYeIj6Q%2B6zAg6iT%2BueUUMohvAE5L9sTeq9zwJxNIyQ7q71OdE41p85h7I%2Fy5Wqql8aGywG9QwwC%2BH9gciNsO85T%2FAmQP7q3J1HQNAKzDMAX4XzoEMoo%2FqRBb2AASaos0zjgfMNSvpShVEtrADaJncUk9zv5o%2FCOt1I%2BYHTpYU8eTArzh8KBYpHvcWVgBxTGBJg%2F7UYs3TI5vrKldmbMJJgFxRdnWnzrLvmcC%2BtmThcG%2Faag15o1a5cLbMRqlMBL3qfXjkhDlqY53wi1phQugFB0SVt2gVNLajRsPnOCn94Qp8AtI37s5gMmWsAiVaAD89zS9DLYgWggpaL%2FFMn1T8LRApbPrViPfs0uR4UaaYXcSh1bH1NLxk6P%2Fne7n0IcNSTB%2FU%2BcJOqNux2M%3D";
+        window.__genspark_locale = "en-US";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDuxCL/5vl4qY9o9Kh3TKIgjaiR1un9Za0pDTlVouHnEGhnQ4pQb2lvDEH5TxNpzvN+elh+MoXgLOjIfYeJSZ3i9Ab35bZyI3bPRi0HqmtksH+3kTCkw2gV/NoJqx+pA2816NSiotQYeIj6Q+6zAg6iT+ueUUMohvAE5L9sTeq9zwJxNIyQ7q71OdE41p85h7I/y5Wqql8aGywG9QwwC+H9gciNsO85T/AmQP7q3J1HQNAKzDMAX4XzoEMoo/qRBb2AASaos0zjgfMNSvpShVEtrADaJncUk9zv5o/COt1I+YHTpYU8eTArzh8KBYpHvcWVgBxTGBJg/7UYs3TI5vrKldmbMJJgFxRdnWnzrLvmcC+tmThcG/aag15o1a5cLbMRqlMBL3qfXjkhDlqY53wi1phQugFB0SVt2gVNLajRsPnOCn94Qp8AtI37s5gMmWsAiVaAD89zS9DLYgWggpaL/FMn1T8LRApbPrViPfs0uR4UaaYXcSh1bH1NLxk6P/ne7n0IcNSTB/U+cJOqNux2M=";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
