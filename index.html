@@ -336,6 +336,152 @@
                 left: 20px;
                 bottom: 80px;
             }
+            
+            /* Navigation improvements */
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* Hero section mobile */
+            .hero-banner h1 {
+                font-size: 2.5rem !important;
+                line-height: 1.2;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-banner p {
+                font-size: 1rem !important;
+                margin-bottom: 1.5rem;
+            }
+            
+            /* Section titles */
+            .section-title {
+                font-size: 2rem !important;
+                margin-bottom: 1rem;
+            }
+            
+            /* Grid improvements */
+            .grid.md\\:grid-cols-2,
+            .grid.md\\:grid-cols-3,
+            .grid.md\\:grid-cols-4 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            /* Property cards */
+            .property-card {
+                margin-bottom: 1rem;
+            }
+            
+            /* Calculator improvements */
+            .calculator-card {
+                margin-bottom: 1rem;
+                padding: 1rem;
+            }
+            
+            .tab-button {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+            
+            /* Form improvements */
+            .calculator-input {
+                font-size: 1rem;
+                padding: 0.75rem;
+            }
+            
+            /* Facility icons */
+            .facility-icon {
+                width: 50px;
+                height: 50px;
+            }
+            
+            /* Footer improvements */
+            footer .grid.md\\:grid-cols-4 {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+            
+            /* Floating buttons */
+            .fixed.bottom-6.right-6,
+            .fixed.bottom-20.right-6 {
+                right: 1rem;
+                bottom: 1rem;
+            }
+            
+            .fixed.bottom-20.right-6 {
+                bottom: 5rem;
+            }
+            
+            /* Text sizing */
+            .text-5xl.md\\:text-7xl {
+                font-size: 2.5rem !important;
+            }
+            
+            .text-2xl.md\\:text-3xl {
+                font-size: 1.25rem !important;
+            }
+            
+            .text-lg.md\\:text-xl {
+                font-size: 1rem !important;
+            }
+            
+            /* Padding adjustments */
+            .py-20 {
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+            
+            .py-12 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            
+            /* Image responsiveness */
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* Extra small screens */
+            .hero-banner h1 {
+                font-size: 2rem !important;
+            }
+            
+            .hero-banner p {
+                font-size: 0.875rem !important;
+            }
+            
+            .section-title {
+                font-size: 1.75rem !important;
+            }
+            
+            .calculator-card {
+                padding: 0.75rem;
+            }
+            
+            .tab-button {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+            }
+            
+            /* Reduce spacing on very small screens */
+            .py-20 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            
+            .space-y-8 > * + * {
+                margin-top: 1rem;
+            }
+            
+            .space-y-6 > * + * {
+                margin-top: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -356,9 +502,21 @@
                     <a href="#news" class="text-gray-700 hover:text-green-600 transition">Tin tức</a>
                     <a href="#contact" class="text-gray-700 hover:text-green-600 transition">Liên hệ</a>
                 </div>
-                <button class="md:hidden">
-                    <i class="fas fa-bars text-2xl"></i>
+                <button class="md:hidden" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl" id="mobileMenuIcon"></i>
                 </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div class="md:hidden hidden" id="mobileMenu">
+                <div class="py-4 space-y-4 border-t border-gray-200">
+                    <a href="#home" class="block text-gray-700 hover:text-green-600 transition" onclick="closeMobileMenu()">Trang chủ</a>
+                    <a href="#overview" class="block text-gray-700 hover:text-green-600 transition" onclick="closeMobileMenu()">Tổng quan</a>
+                    <a href="#location" class="block text-gray-700 hover:text-green-600 transition" onclick="closeMobileMenu()">Vị trí</a>
+                    <a href="#products" class="block text-gray-700 hover:text-green-600 transition" onclick="closeMobileMenu()">Sản phẩm</a>
+                    <a href="#calculator" class="block text-gray-700 hover:text-green-600 transition" onclick="closeMobileMenu()">Công cụ tài chính</a>
+                    <a href="#news" class="block text-gray-700 hover:text-green-600 transition" onclick="closeMobileMenu()">Tin tức</a>
+                    <a href="#contact" class="block text-gray-700 hover:text-green-600 transition" onclick="closeMobileMenu()">Liên hệ</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -391,7 +549,7 @@
     </section>
 
     <!-- Project Overview -->
-    <section id="overview" class="py-20 bg-gray-50">
+    <section id="overview about" class="py-20 bg-gray-50">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-800 mb-6 section-title">Tổng quan dự án</h2>
@@ -574,7 +732,7 @@
     </section>
 
     <!-- Facilities Section -->
-    <section class="py-20">
+    <section id="facilities" class="py-20">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-800 mb-6 section-title">GẦN 100 TIỆN ÍCH NỘI KHU ĐA DẠNG</h2>
@@ -781,6 +939,11 @@
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Products Properties Section -->
+    <section id="products properties" class="py-20 bg-gray-50">
+        <!-- Add your products properties content here -->
     </section>
 
     <!-- Financial Calculator Section -->
@@ -1138,26 +1301,26 @@
                 <div>
                     <h4 class="font-semibold mb-4">Sản phẩm</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-green-500">Biệt thự</a></li>
-                        <li><a href="#" class="hover:text-green-500">Liền kề</a></li>
-                        <li><a href="#" class="hover:text-green-500">Căn hộ chung cư</a></li>
-                        <li><a href="#" class="hover:text-green-500">Shophouse</a></li>
+                        <li><a href="#properties" class="hover:text-green-500">Biệt thự</a></li>
+                        <li><a href="#properties" class="hover:text-green-500">Liền kề</a></li>
+                        <li><a href="#properties" class="hover:text-green-500">Căn hộ chung cư</a></li>
+                        <li><a href="#properties" class="hover:text-green-500">Shophouse</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-4">Thông tin</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-green-500">Tổng quan dự án</a></li>
-                        <li><a href="#" class="hover:text-green-500">Vị trí</a></li>
-                        <li><a href="#" class="hover:text-green-500">Tiện ích</a></li>
-                        <li><a href="#" class="hover:text-green-500">Tin tức</a></li>
+                        <li><a href="#about" class="hover:text-green-500">Tổng quan dự án</a></li>
+                        <li><a href="#location" class="hover:text-green-500">Vị trí</a></li>
+                        <li><a href="#facilities" class="hover:text-green-500">Tiện ích</a></li>
+                        <li><a href="#news" class="hover:text-green-500">Tin tức</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-4">Liên hệ</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li>Hotline: 0976452486</li>
-                        <li>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="60090e060f200515120f17090e040f1713100f121407011204050e4e02091a">[email&#160;protected]</a></li>
+                        <li>Hotline: <a href="tel:0976452486" class="hover:text-green-500">0976452486</a></li>
+                        <li>Email: <a href="mailto:info@eurowindowsportgarden.biz" class="hover:text-green-500">info@eurowindowsportgarden.biz</a></li>
                         <li>Địa chỉ: TP.Vinh, Nghệ An</li>
                     </ul>
                 </div>
@@ -1639,6 +1802,18 @@
                 }, 4000);
             }
         }, 5000);
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Close Mobile Menu
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.add('hidden');
+        }
     </script>
 </body>
 </html>
