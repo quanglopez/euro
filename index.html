@@ -108,8 +108,8 @@
         /* Chatbot Styles */
         .chatbot-container {
             position: fixed;
-            bottom: 100px;
-            right: 20px;
+            bottom: 20px;
+            right: 15px;
             z-index: 1000;
         }
         
@@ -174,6 +174,7 @@
             transform: scale(0.8) translateY(20px);
             opacity: 0;
             transition: all 0.3s ease;
+            z-index: 1001;
         }
         
         .chatbot-window.active {
@@ -345,19 +346,27 @@
 
         @media (max-width: 768px) {
             .chatbot-window {
-                width: calc(100vw - 40px);
-                height: 60vh;
-                right: 20px;
-                left: 20px;
-                bottom: 80px;
-                max-height: 500px;
+                position: fixed;
+                width: calc(100vw - 30px);
+                height: 70vh;
+                right: 15px;
+                left: 15px;
+                bottom: 90px;
+                max-height: 600px;
+                min-height: 400px;
+                z-index: 1001;
+            }
+            
+            .chatbot-container {
+                position: fixed;
+                bottom: 20px;
+                right: 15px;
+                z-index: 1000;
             }
             
             .chatbot-toggle {
                 width: 50px;
                 height: 50px;
-                bottom: 20px;
-                right: 20px;
             }
             
             .chatbot-toggle i {
@@ -379,6 +388,8 @@
             .chatbot-messages {
                 padding: 15px;
                 gap: 10px;
+                max-height: calc(70vh - 160px);
+                overflow-y: auto;
             }
             
             .message {
@@ -389,6 +400,10 @@
             
             .chatbot-input-container {
                 padding: 15px;
+                position: sticky;
+                bottom: 0;
+                background: white;
+                border-top: 1px solid #e5e7eb;
             }
             
             .chatbot-input {
@@ -1485,6 +1500,7 @@
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         let chatbotOpen = false;
         let loanChart, investmentChart;
+        let currentLoanMethod = 'equal_payment';
         
         // Financial Calculator Functions
         function switchTab(tab) {
@@ -1496,20 +1512,166 @@
             if (tab === 'loan') {
                 loanTab.classList.add('active');
                 investmentTab.classList.remove('active');
-                loanCalculator.classList.remove('hidden');
-                investmentCalculator.classList.add('hidden');
+                loanCalculator.style.display = 'block';
+                if (investmentCalculator) {
+                    investmentCalculator.style.display = 'none';
+                }
                 setTimeout(() => {
                     calculateLoan();
                 }, 100);
             } else {
                 investmentTab.classList.add('active');
                 loanTab.classList.remove('active');
-                investmentCalculator.classList.remove('hidden');
-                loanCalculator.classList.add('hidden');
+                loanCalculator.style.display = 'none';
+                if (investmentCalculator) {
+                    investmentCalculator.style.display = 'block';
+                } else {
+                    createInvestmentCalculator();
+                }
                 setTimeout(() => {
                     calculateInvestment();
                 }, 100);
             }
+        }
+
+        function createInvestmentCalculator() {
+            const calculatorSection = document.querySelector('#calculator .container');
+            const investmentHTML = `
+                <div id="investmentCalculator" class="calculator-section" style="display: none;">
+                    <div class="grid lg:grid-cols-3 gap-8">
+                        <!-- Input Section -->
+                        <div class="lg:col-span-2">
+                            <div class="calculator-card p-8">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                                    <i class="fas fa-chart-line text-green-600 mr-3"></i>
+                                    Phân tích đầu tư bất động sản
+                                </h3>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Giá mua (VNĐ)</label>
+                                        <input type="number" id="purchasePrice" class="w-full calculator-input" 
+                                               placeholder="5,000,000,000" value="5000000000" oninput="calculateInvestment()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Tăng giá dự kiến (%/năm)</label>
+                                        <input type="number" id="appreciation" class="w-full calculator-input" 
+                                               placeholder="8" value="8" step="0.1" oninput="calculateInvestment()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Thu nhập cho thuê (VNĐ/tháng)</label>
+                                        <input type="number" id="monthlyRent" class="w-full calculator-input" 
+                                               placeholder="15,000,000" value="15000000" oninput="calculateInvestment()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Thời gian đầu tư (năm)</label>
+                                        <input type="number" id="investmentPeriod" class="w-full calculator-input" 
+                                               placeholder="10" value="10" min="1" max="30" oninput="calculateInvestment()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Chi phí quản lý (%)</label>
+                                        <input type="number" id="managementFee" class="w-full calculator-input" 
+                                               placeholder="5" value="5" step="0.1" oninput="calculateInvestment()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Thuế bán nhà (%)</label>
+                                        <input type="number" id="sellingTax" class="w-full calculator-input" 
+                                               placeholder="2" value="2" step="0.1" oninput="calculateInvestment()">
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Kịch bản thị trường:</label>
+                                    <div class="grid md:grid-cols-3 gap-4">
+                                        <button onclick="setMarketScenario('conservative')" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
+                                            <div class="font-semibold">Thận trọng</div>
+                                            <div class="text-sm text-gray-600">Tăng 5%/năm</div>
+                                        </button>
+                                        <button onclick="setMarketScenario('moderate')" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
+                                            <div class="font-semibold">Trung bình</div>
+                                            <div class="text-sm text-gray-600">Tăng 8%/năm</div>
+                                        </button>
+                                        <button onclick="setMarketScenario('optimistic')" class="p-4 border border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition">
+                                            <div class="font-semibold">Lạc quan</div>
+                                            <div class="text-sm text-gray-600">Tăng 12%/năm</div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Results Section -->
+                        <div>
+                            <div class="result-card mb-6">
+                                <h4 class="text-lg font-semibold mb-4">Kết quả phân tích</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="text-sm opacity-90">Giá trị tương lai</div>
+                                        <div class="text-2xl font-bold" id="futureValue">10,794,624,000 VNĐ</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm opacity-90">Thu nhập cho thuê (ròng)</div>
+                                        <div class="text-xl font-semibold" id="totalRental">1,710,000,000 VNĐ</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm opacity-90">Lợi nhuận ròng</div>
+                                        <div class="text-xl font-semibold" id="investmentNetProfit">7,288,624,000 VNĐ</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm opacity-90">ROI (%)</div>
+                                        <div class="text-xl font-semibold" id="investmentROI">145.8%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-lg shadow-lg">
+                                <h4 class="font-semibold text-gray-800 mb-4">Biểu đồ tăng trưởng đầu tư</h4>
+                                <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
+                                    <canvas id="investmentGrowthChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            calculatorSection.insertAdjacentHTML('beforeend', investmentHTML);
+        }
+
+        function setLoanMethod(method) {
+            currentLoanMethod = method;
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.loan-method-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.querySelectorAll('.text-gray-600').forEach(text => {
+                    text.classList.remove('text-white');
+                    text.classList.add('text-gray-600');
+                });
+            });
+            
+            // Add active class to selected button
+            let activeBtn;
+            switch(method) {
+                case 'equal_payment':
+                    activeBtn = document.getElementById('equalPaymentBtn');
+                    break;
+                case 'equal_principal':
+                    activeBtn = document.getElementById('equalPrincipalBtn');
+                    break;
+                case 'decreasing_interest':
+                    activeBtn = document.getElementById('decreasingInterestBtn');
+                    break;
+            }
+            
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.querySelectorAll('.text-gray-600').forEach(text => {
+                    text.classList.remove('text-gray-600');
+                    text.classList.add('text-white');
+                });
+            }
+            
+            calculateLoan();
         }
 
         function formatCurrency(amount) {
@@ -1518,13 +1680,20 @@
 
         function setPropertyPrice(price) {
             document.getElementById('propertyValue').value = price;
-            document.getElementById('purchasePrice').value = price;
+            const purchasePriceInput = document.getElementById('purchasePrice');
+            if (purchasePriceInput) {
+                purchasePriceInput.value = price;
+            }
             calculateLoan();
-            calculateInvestment();
+            if (document.getElementById('investmentCalculator') && document.getElementById('investmentCalculator').style.display !== 'none') {
+                calculateInvestment();
+            }
         }
 
         function setMarketScenario(scenario) {
             const appreciationInput = document.getElementById('appreciation');
+            if (!appreciationInput) return;
+            
             switch(scenario) {
                 case 'conservative':
                     appreciationInput.value = 5;
@@ -1551,31 +1720,52 @@
             const numPayments = loanTermYears * 12;
 
             let monthlyPayment = 0;
-            if (monthlyRate > 0) {
-                monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
-                                (Math.pow(1 + monthlyRate, numPayments) - 1);
-            } else {
-                monthlyPayment = loanAmount / numPayments;
+            let totalInterest = 0;
+            
+            if (currentLoanMethod === 'equal_payment') {
+                // Trả đều hàng tháng
+                if (monthlyRate > 0) {
+                    monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+                                    (Math.pow(1 + monthlyRate, numPayments) - 1);
+                } else {
+                    monthlyPayment = loanAmount / numPayments;
+                }
+                totalInterest = (monthlyPayment * numPayments) - loanAmount;
+            } else if (currentLoanMethod === 'equal_principal') {
+                // Trả gốc đều
+                const principalPayment = loanAmount / numPayments;
+                monthlyPayment = principalPayment + (loanAmount * monthlyRate);
+                totalInterest = (loanAmount * monthlyRate * (numPayments + 1)) / 2;
+            } else if (currentLoanMethod === 'decreasing_interest') {
+                // Giảm lãi dần
+                const principalPayment = loanAmount / numPayments;
+                monthlyPayment = principalPayment + (loanAmount * monthlyRate);
+                totalInterest = (loanAmount * monthlyRate * (numPayments + 1)) / 2;
             }
 
-            const totalPayment = monthlyPayment * numPayments;
-            const totalInterest = totalPayment - loanAmount;
+            const totalPayment = loanAmount + totalInterest;
+            
+            // Tính toán lợi nhuận đầu tư (giả định tăng giá 8%/năm)
+            const futureValue = propertyValue * Math.pow(1.08, loanTermYears);
+            const netProfit = futureValue - totalPayment;
+            const roi = ((futureValue - propertyValue) / propertyValue) * 100;
 
             document.getElementById('loanAmount').textContent = formatCurrency(loanAmount);
             document.getElementById('monthlyPayment').textContent = formatCurrency(monthlyPayment);
-            document.getElementById('totalInterest').textContent = formatCurrency(totalInterest);
-            document.getElementById('totalPayment').textContent = formatCurrency(totalPayment);
+            document.getElementById('netProfit').textContent = formatCurrency(netProfit);
+            document.getElementById('roi').textContent = roi.toFixed(1) + '%';
 
             updateLoanChart(loanAmount, totalInterest);
+            updateInvestmentChart(propertyValue, futureValue, loanTermYears, 8);
         }
 
         function calculateInvestment() {
-            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-            const appreciation = parseFloat(document.getElementById('appreciation').value) || 0;
-            const monthlyRent = parseFloat(document.getElementById('monthlyRent').value) || 0;
-            const investmentPeriod = parseFloat(document.getElementById('investmentPeriod').value) || 0;
-            const managementFee = parseFloat(document.getElementById('managementFee').value) || 0;
-            const sellingTax = parseFloat(document.getElementById('sellingTax').value) || 0;
+            const purchasePrice = parseFloat(document.getElementById('purchasePrice')?.value) || 0;
+            const appreciation = parseFloat(document.getElementById('appreciation')?.value) || 0;
+            const monthlyRent = parseFloat(document.getElementById('monthlyRent')?.value) || 0;
+            const investmentPeriod = parseFloat(document.getElementById('investmentPeriod')?.value) || 0;
+            const managementFee = parseFloat(document.getElementById('managementFee')?.value) || 0;
+            const sellingTax = parseFloat(document.getElementById('sellingTax')?.value) || 0;
 
             const futureValue = purchasePrice * Math.pow(1 + appreciation / 100, investmentPeriod);
             const totalRental = monthlyRent * 12 * investmentPeriod;
@@ -1587,16 +1777,22 @@
             const netProfit = totalReturn - purchasePrice;
             const roi = (netProfit / purchasePrice) * 100;
 
-            document.getElementById('futureValue').textContent = formatCurrency(futureValue);
-            document.getElementById('totalRental').textContent = formatCurrency(netRental);
-            document.getElementById('netProfit').textContent = formatCurrency(netProfit);
-            document.getElementById('roi').textContent = roi.toFixed(1) + '%';
+            const futureValueEl = document.getElementById('futureValue');
+            const totalRentalEl = document.getElementById('totalRental');
+            const investmentNetProfitEl = document.getElementById('investmentNetProfit');
+            const investmentROIEl = document.getElementById('investmentROI');
 
-            updateInvestmentChart(purchasePrice, futureValue, investmentPeriod, appreciation);
+            if (futureValueEl) futureValueEl.textContent = formatCurrency(futureValue);
+            if (totalRentalEl) totalRentalEl.textContent = formatCurrency(netRental);
+            if (investmentNetProfitEl) investmentNetProfitEl.textContent = formatCurrency(netProfit);
+            if (investmentROIEl) investmentROIEl.textContent = roi.toFixed(1) + '%';
+
+            updateInvestmentGrowthChart(purchasePrice, futureValue, investmentPeriod, appreciation);
         }
 
         function updateLoanChart(principal, interest) {
-            const ctx = document.getElementById('loanChart').getContext('2d');
+            const ctx = document.getElementById('loanChart')?.getContext('2d');
+            if (!ctx) return;
             
             if (loanChart) {
                 loanChart.destroy();
@@ -1633,7 +1829,8 @@
         }
 
         function updateInvestmentChart(initial, final, years, rate) {
-            const ctx = document.getElementById('investmentChart').getContext('2d');
+            const ctx = document.getElementById('investmentChart')?.getContext('2d');
+            if (!ctx) return;
             
             if (investmentChart) {
                 investmentChart.destroy();
@@ -1652,6 +1849,75 @@
                     labels: labels,
                     datasets: [{
                         label: 'Giá trị tài sản',
+                        data: data,
+                        borderColor: '#059669',
+                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 10
+                                },
+                                callback: function(value) {
+                                    return (value / 1000000000).toFixed(1) + 'B';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateInvestmentGrowthChart(initial, final, years, rate) {
+            const ctx = document.getElementById('investmentGrowthChart')?.getContext('2d');
+            if (!ctx) return;
+            
+            if (window.investmentGrowthChart) {
+                window.investmentGrowthChart.destroy();
+            }
+
+            const data = [];
+            const labels = [];
+            for (let i = 0; i <= years; i++) {
+                labels.push(`Năm ${i}`);
+                data.push(initial * Math.pow(1 + rate / 100, i));
+            }
+
+            window.investmentGrowthChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Giá trị đầu tư',
                         data: data,
                         borderColor: '#059669',
                         backgroundColor: 'rgba(5, 150, 105, 0.1)',
@@ -1894,7 +2160,8 @@
         // Initialize calculations on page load
         document.addEventListener('DOMContentLoaded', function() {
             calculateLoan();
-            calculateInvestment();
+            // Set default loan method
+            setLoanMethod('equal_payment');
         });
 
         // Auto-show chatbot after 5 seconds
